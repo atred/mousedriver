@@ -34,4 +34,4 @@ TODO:
 * Feature parity with Povohat's mouse driver
 * Easier installation
 
-I've only tested the driver on Ubuntu 14.04 with a Microsoft Intellimouse Explorer 3.0 and a Logitech MX518. Feel free to open an issue if you're having any problems with the driver.
+I've only tested the driver on Ubuntu 14.04 and SteamOS with a Microsoft Intellimouse Explorer 3.0 and a Logitech MX518. Feel free to open an issue if you're having any problems with the driver.

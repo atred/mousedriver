@@ -11,7 +11,7 @@
  * Google something like "reciprocal of 0.1" to figure out what this should be.
  * Unfortunately, it has to be an integer for now.
  */
-#define ACCEL_RECIPROCAL 10
+#define ACCEL_RECIPROCAL 5
 
 /*
  *  Copyright (c) 1999-2001 Vojtech Pavlik
@@ -78,13 +78,12 @@ static void usb_mouse_irq(struct urb *urb)
 
 	// acceleration happens here
 	signed int pr = POLLING_RATE;
-	signed int ms = 1000 / pr;
-	signed int accel_r = ACCEL_RECIPROCAL;
+	signed int accel_r = ACCEL_RECIPROCAL * 1000;
 	signed int delta_x = data[1];
 	signed int delta_y = data[2];
 	signed int rate = int_sqrt(delta_x * delta_x + delta_y * delta_y);
-	signed int accel_x = (rate * delta_x) / ms / accel_r;
-	signed int accel_y = (rate * delta_y) / ms / accel_r;
+	signed int accel_x = (rate * delta_x) * pr / accel_r;
+	signed int accel_y = (rate * delta_y) * pr / accel_r;
 
 	delta_x += accel_x;
 	delta_y += accel_y;
@@ -96,7 +95,7 @@ static void usb_mouse_irq(struct urb *urb)
 	case -ENOENT:
 	case -ESHUTDOWN:
 		return;
-	/* -EPIPE:  should clear the halt */
+		/* -EPIPE:  should clear the halt */
 	default:		/* error */
 		goto resubmit;
 	}
@@ -252,7 +251,7 @@ static void usb_mouse_disconnect(struct usb_interface *intf)
 
 static struct usb_device_id usb_mouse_id_table [] = {
 	{ USB_INTERFACE_INFO(USB_INTERFACE_CLASS_HID, USB_INTERFACE_SUBCLASS_BOOT,
-		USB_INTERFACE_PROTOCOL_MOUSE) },
+			     USB_INTERFACE_PROTOCOL_MOUSE) },
 	{ }	/* Terminating entry */
 };
 
